@@ -1,0 +1,418 @@
+Project: Microchain-Native Agentic AI DApp on Linera
+
+GLOBAL RULES
+
+Build a production-grade system, not a demo.
+
+Follow Linera microchain architecture strictly.
+
+All on-chain logic must be deterministic.
+
+AI must never hold private keys.
+
+Each module must be independently testable.
+
+Prefer clarity over abstraction.
+
+STEP 1 — INITIAL SETUP
+1.1 Repository Structure
+
+Create a mono-repo with the following structure:
+
+linera-agentic-dapp/
+├── ai/
+│   ├── intent/
+│   │   ├── schema.json
+│   │   ├── parser.ts
+│   │   └── validator.ts
+│   ├── prompts/
+│   │   └── intent_prompt.md
+│   └── llm.ts
+│
+├── orchestrator/
+│   ├── router.ts
+│   ├── policy.ts
+│   ├── agents.ts
+│   └── index.ts
+│
+├── linera/
+│   ├── wallet-app/
+│   ├── nft-app/
+│   ├── dao-app/
+│   └── agent-state-app/
+│
+├── web/
+│   ├── app/
+│   ├── components/
+│   └── realtime/
+│
+└── docs/
+
+STEP 2 — AI INTENT LAYER
+2.1 Intent Schema
+
+Create a strict JSON schema:
+
+{
+  "intent": "string",
+  "target": "user | agent | dao | app",
+  "microchain_id": "string",
+  "params": "object",
+  "requires_confirmation": true
+}
+
+2.2 Intent Parser
+
+Implement a parser that:
+
+Converts natural language → JSON intent
+
+Rejects ambiguous outputs
+
+Outputs only valid JSON
+
+2.3 Prompt Rules
+
+Prompt must:
+
+Never hallucinate blockchain state
+
+Always return structured intent
+
+Ask for clarification if uncertain
+
+STEP 3 — AGENT ORCHESTRATOR
+3.1 Responsibilities
+
+Implement an orchestrator that:
+
+Receives validated intent
+
+Checks permissions
+
+Routes intent to correct Linera app
+
+Logs execution results
+
+3.2 Agent Model
+
+Each agent must have:
+
+Agent ID
+
+Assigned microchain
+
+Allowed actions list
+
+Execution history
+
+3.3 Policy Engine
+
+Implement rules:
+
+Agents cannot access foreign microchains
+
+User approval required for asset movement
+
+Autonomous execution only for whitelisted intents
+
+STEP 4 — MICROCHAIN ROUTING
+4.1 Routing Logic
+
+Implement router:
+
+Map intent → Linera application
+
+Resolve microchain ownership
+
+Support cross-microchain messaging
+
+STEP 5 — LINERA APPLICATIONS (RUST)
+5.1 Wallet App
+
+Must support:
+
+Balance tracking
+
+Transfers
+
+Event emission
+
+5.2 NFT App
+
+Must support:
+
+Collection creation
+
+Mint
+
+Transfer
+
+Metadata storage
+
+5.3 DAO App
+
+Must support:
+
+Proposal creation
+
+Voting
+
+Execution
+
+5.4 Agent State App
+
+Must support:
+
+Agent memory
+
+Task queue
+
+Execution logs
+
+STEP 6 — EVENT SYSTEM
+6.1 Event Emission
+
+Each Linera app must:
+
+Emit structured events
+
+Include microchain ID
+
+Include action result
+
+6.2 Event Consumption
+
+Backend and UI must:
+
+Subscribe to events
+
+Update state in real-time
+
+STEP 7 — FRONTEND (REAL-TIME UI)
+7.1 UI Requirements
+
+Implement:
+
+Chat-based interface
+
+Intent preview & approval
+
+Agent activity feed
+
+Live state updates
+
+7.2 Realtime
+
+Use:
+
+WebSockets
+
+Event subscriptions
+
+Latency target:
+
+UI updates < 200ms
+
+STEP 8 — SECURITY ENFORCEMENT
+8.1 Key Handling
+
+Private keys ONLY in user wallet
+
+AI never signs transactions
+
+No secrets in frontend
+
+8.2 Validation
+
+Validate intent at:
+
+AI layer
+
+Orchestrator
+
+Linera app
+
+STEP 9 — TESTING
+9.1 Unit Tests
+
+Intent parsing
+
+Policy validation
+
+Routing logic
+
+9.2 Integration Tests
+
+End-to-end intent → microchain → event → UI
+
+Multi-agent parallel execution
+
+STEP 10 — PERFORMANCE TARGETS
+
+Transaction finality < 1s
+
+Linear scaling per user
+
+No global state contention
+
+STEP 11 — DEPLOYMENT
+11.1 Environments
+
+Local Linera devnet
+
+Testnet
+
+Mainnet
+
+11.2 Observability
+
+Structured logs
+
+Event tracing
+
+Error metrics
+
+STEP 12 — SUCCESS CRITERIA
+
+System is complete when:
+
+Users interact via natural language
+
+AI agents operate autonomously
+
+Microchains scale linearly
+
+UI feels Web2-fast
+
+All actions are auditable on-chain
+
+FINAL DIRECTIVE
+
+Build a real-time, agentic, microchain-native AI DApp on Linera where each user and AI agent operates on isolated microchains, enabling instant finality, parallel execution, and natural language interaction.
+
+6. Functional Requirements
+6.1 User Interaction
+
+Users must be able to:
+
+Enter natural language commands
+
+View AI interpretation before execution
+
+Approve or reject actions
+
+See real-time state changes
+
+6.2 AI Intent Processing
+
+The system must:
+
+Convert text to structured intent
+
+Validate intent syntax
+
+Reject ambiguous or unsafe intents
+
+Support multi-step intents
+
+6.3 Microchain Execution
+
+Each user must have:
+
+A dedicated microchain
+
+AI agents must:
+
+Operate on assigned microchains
+
+Never access unauthorized chains
+
+Cross-microchain messaging must be supported
+
+6.4 Smart Contract Logic
+
+Wallet:
+
+Balance tracking
+
+Transfers
+
+NFTs:
+
+Mint
+
+Transfer
+
+Query metadata
+
+DAO:
+
+Propose
+
+Vote
+
+Execute
+
+Agent State:
+
+Memory
+
+Task queue
+
+Execution logs
+
+6.5 Real-Time Events
+
+UI must update instantly when:
+
+State changes
+
+Agent acts
+
+Transactions finalize
+
+7. Non-Functional Requirements
+7.1 Performance
+
+Finality: < 1 second
+
+UI update latency: < 200 ms
+
+Parallel execution across microchains
+
+7.2 Scalability
+
+Linear scaling with number of users
+
+No global bottlenecks
+
+Stateless AI layer
+
+7.3 Security
+
+Deterministic contract execution
+
+Explicit permission model
+
+No private keys exposed to AI
+
+All actions auditable on-chain
+
+7.4 Reliability
+
+System must tolerate:
+
+AI failures
+
+Partial intent errors
+
+Clear rollback and error messaging
+
+7.5 Maintainability
+
+Modular Linera apps
+
+Versioned intent schemas
+
+Clear logging and tracing
